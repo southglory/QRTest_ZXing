@@ -112,7 +112,14 @@ public class QRCodeScanner : MonoBehaviour
         {
             // Handle the "back" button press here
             // You can perform any action you want, such as navigating back or showing a dialog.
-            StopScanning();
+            if (camTexture != null && camTexture.isPlaying)
+            {
+                StopScanning();
+            }
+            else
+            {
+                QuitAllScenes();
+            }
         }
     }
     
@@ -189,4 +196,16 @@ public class QRCodeScanner : MonoBehaviour
             camTexture.Stop();
         }
     }
+    
+    void QuitAllScenes()
+    {
+#if UNITY_EDITOR
+        // In the Unity Editor, stop play mode.
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            // In a standalone build or on a mobile device, use Application.Quit().
+            Application.Quit();
+#endif
+    }
+
 }
