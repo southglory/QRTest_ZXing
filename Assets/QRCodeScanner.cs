@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -14,19 +15,44 @@ public class QRCodeScanner : MonoBehaviour
 
     void Start()
     {
-        strBarcodeRead = null;
+        // WebCamTexture 설정
         camTexture = new WebCamTexture();
-        camTexture.requestedHeight = Screen.height;
-        camTexture.requestedWidth = Screen.width;
+        camTexture.Play();
 
-        if (camTexture != null)
+        // RawImage에 WebCamTexture 설정
+        rawImageDisplay.texture = camTexture;
+
+        // 비율에 맞게 RawImage의 RectTransform 크기 조정
+        StartCoroutine(AdjustRawImageSize());
+    }
+
+    private IEnumerator AdjustRawImageSize()
+    {
+        yield return new WaitUntil(() => camTexture.width > 100);
+
+        float screenAspectRatio = (float)Screen.width / Screen.height;
+        float camAspectRatio = (float)camTexture.width / camTexture.height;
+
+        rawImageDisplay.rectTransform.localEulerAngles = new Vector3(0, 0, -camTexture.videoRotationAngle);
+
+        if (camTexture.videoVerticallyMirrored)
         {
-            camTexture.Play();
-            rawImageDisplay.texture = camTexture;
-            rawImageDisplay.material.mainTexture = camTexture;
+            rawImageDisplay.rectTransform.localScale = new Vector3(1, -1, 1);
+        }
+
+        if (screenAspectRatio > camAspectRatio)
+        {
+            float width = Screen.height * camAspectRatio;
+            rawImageDisplay.rectTransform.sizeDelta = new Vector2(width, Screen.height);
+        }
+        else
+        {
+            float height = Screen.width / camAspectRatio;
+            rawImageDisplay.rectTransform.sizeDelta = new Vector2(Screen.width, height);
         }
     }
 
+    
     void Update()
     {
         try
