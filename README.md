@@ -30,3 +30,7 @@ https://youtube.com/shorts/UwV-2bBGiyw?feature=share
 1. QR 코드를 스캔하고 결과를 UI 패널에 표시하며, 스캔된 내용이 유효한 URL인 경우에만 버튼을 통해 URL을 열 수 있도록 함.
 2. 웹캠 촬영 재시작 로직 'RestartScanning' 메서드 추가
 3. openUrlButton의 클릭 이벤트 리스너를 초기화
+
+기록
+
+https://youtu.be/7ooT7OSrfNk
