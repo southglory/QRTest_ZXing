@@ -12,6 +12,7 @@ public class QRCodeScanner : MonoBehaviour
     
     public RawImage rawImageDisplay;
     public GameObject QRCompletedPanel; // QR 코드 스캔 완료 패널
+    public TextMeshProUGUI titleText; // 스캔 완료 패널의 제목 텍스트
     public TextMeshProUGUI scannedText; // 스캔된 텍스트를 표시할 TextMeshProUGUI
     public Button openUrlButton; // URL 열기 버튼
 
@@ -103,7 +104,7 @@ public class QRCodeScanner : MonoBehaviour
             }
             catch (Exception ex)
             {
-                Debug.LogWarning(ex.Message);
+                // Debug.LogWarning(ex.Message);
             }
         }
         
@@ -131,8 +132,32 @@ public class QRCodeScanner : MonoBehaviour
 
         openUrlButton.onClick.RemoveAllListeners(); // 기존 리스너 제거
         
+        
+        bool isUrl = Uri.IsWellFormedUriString(scannedData, UriKind.Absolute);
+
+        // URL 여부에 따라 패널 제목과 텍스트 색상 변경
+        if (isUrl)
+        {
+            // "dhlottery.co.kr"을 포함하는지 확인
+            if (scannedData.Contains("dhlottery.co.kr"))
+            {
+                titleText.text = "당첨번호 확인을 위해 동행복권 공식 웹사이트로 이동합니다.";
+                titleText.color = Color.black; // 글자 색상을 검정색으로 설정
+            }
+            else
+            {
+                titleText.text = "(주의!) 동행복권(dhlottery) 웹사이트 주소가 아닙니다.";
+                titleText.color = Color.red; // 글자 색상을 빨간색으로 설정
+            }
+        }
+        else
+        {
+            titleText.text = "QR코드가 올바르지 않습니다. 다시 시도해주세요.";
+            titleText.color = Color.black; // 글자 색상을 검정색으로 설정
+        }
+        
         // URL 확인 버튼 활성화 여부 결정
-        if (Uri.IsWellFormedUriString(scannedData, UriKind.Absolute))
+        if (isUrl)
         {
             openUrlButton.gameObject.SetActive(true);
             openUrlButton.onClick.AddListener(() => OpenUrl(scannedData));

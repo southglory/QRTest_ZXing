@@ -35,3 +35,14 @@ https://youtube.com/shorts/UwV-2bBGiyw?feature=share
 
 https://youtu.be/xE1BYI99Nt4
 
+추가 업데이트!
+
+1. 다양한 상황에 맞는 텍스트 출력  
+- URL이 아닌 경우: "QR코드가 올바르지 않습니다. 다시 시도해주세요" 메시지를 표시합니다.  
+- URL이면서 "dhlottery.co.kr"을 포함하는 경우: "당첨번호 확인을 위해 동행복권 공식 웹사이트로 이동합니다." 메시지를 표시합니다.  
+- URL이지만 "dhlottery.co.kr"을 포함하지 않는 경우: "(주의!) 동행복권(dhlottery) 웹사이트 주소가 아닙니다." 메시지를 빨간색 글자로 표시합니다.  
+
+기록
+
+https://youtu.be/w-QzMBF8_z0
+
