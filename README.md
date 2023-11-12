@@ -25,3 +25,8 @@ https://youtube.com/shorts/UwV-2bBGiyw?feature=share
 4. QR 코드 인식 후 촬영 중단.
 5. 앱이 중단, 포커스 없음, 종료, '뒤로가기 버튼 클릭' 시 웹챔 촬영이 중단되도록 이벤트 처리.
 
+추가 업데이트!
+
+1. QR 코드를 스캔하고 결과를 UI 패널에 표시하며, 스캔된 내용이 유효한 URL인 경우에만 버튼을 통해 URL을 열 수 있도록 함.
+2. 웹캠 촬영 재시작 로직 'RestartScanning' 메서드 추가
+3. openUrlButton의 클릭 이벤트 리스너를 초기화

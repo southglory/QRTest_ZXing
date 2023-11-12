@@ -10,10 +10,12 @@ public class QRCodeScanner : MonoBehaviour
     private static bool _isAppPaused = false;
     private static bool _isAppQuit = false;
     
-    public RawImage rawImageDisplay; // RawImage UI 요소
-    public TextMeshProUGUI tmpText; // TextMeshPro UI 요소
-    private WebCamTexture camTexture;
+    public RawImage rawImageDisplay;
+    public GameObject QRCompletedPanel; // QR 코드 스캔 완료 패널
+    public TextMeshProUGUI scannedText; // 스캔된 텍스트를 표시할 TextMeshProUGUI
+    public Button openUrlButton; // URL 열기 버튼
 
+    private WebCamTexture camTexture;
     static string strBarcodeRead;
 
     void Start()
@@ -90,10 +92,12 @@ public class QRCodeScanner : MonoBehaviour
                 if (result != null && strBarcodeRead != result.Text)
                 {
                     strBarcodeRead = result.Text;
-                    tmpText.text = strBarcodeRead; // TextMeshPro 텍스트 업데이트
                     Debug.Log(result.Text);
 
-                    // QR 코드 인식 후 촬영 중단 (필요한 경우)
+                    // QR 코드 인식 후 처리
+                    HandleScannedQRCode(result.Text);
+
+                    // 촬영 중단
                     StopScanning();
                 }
             }
@@ -111,7 +115,38 @@ public class QRCodeScanner : MonoBehaviour
             StopScanning();
         }
     }
+    
+    private void HandleScannedQRCode(string scannedData)
+    {
+        // 패널과 텍스트 업데이트
+        QRCompletedPanel.SetActive(true);
+        scannedText.text = scannedData;
 
+        openUrlButton.onClick.RemoveAllListeners(); // 기존 리스너 제거
+        
+        // URL 확인 버튼 활성화 여부 결정
+        if (Uri.IsWellFormedUriString(scannedData, UriKind.Absolute))
+        {
+            openUrlButton.gameObject.SetActive(true);
+            openUrlButton.onClick.AddListener(() => OpenUrl(scannedData));
+        }
+        else
+        {
+            openUrlButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void OpenUrl(string url)
+    {
+        Application.OpenURL(url);
+    }
+
+    public void RestartScanning()
+    {
+        strBarcodeRead = null; // 스캔된 데이터 초기화
+        StartScanning(); // 웹캠 촬영 재시작
+    }
+    
     void OnApplicationFocus(bool hasFocus)
     {
         _isAppPaused = !hasFocus;
@@ -123,7 +158,6 @@ public class QRCodeScanner : MonoBehaviour
             StopScanning();
         }
     }
-    
     
     void OnApplicationPause(bool pauseStatus)
     {
