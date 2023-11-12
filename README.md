@@ -33,4 +33,5 @@ https://youtube.com/shorts/UwV-2bBGiyw?feature=share
 
 기록
 
-https://youtu.be/7ooT7OSrfNk
+https://youtu.be/xE1BYI99Nt4
+
